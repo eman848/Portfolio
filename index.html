@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eman Farooq | Front-End Developer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background: #222;
+      color: #fff;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    header.shrink {
+      padding: 0.5rem 2rem;
+      background: #111;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      transition: font-size 0.3s ease;
+    }
+    header.shrink h1 {
+      font-size: 1.2rem;
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover { color: #00bcd4; }
+
+    /* Hamburger menu */
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      nav {
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        background: #222;
+        flex-direction: column;
+        width: 80%;
+        height: calc(100vh - 60px);
+        justify-content: center;
+        align-items: center;
+        transition: right 0.3s ease;
+      }
+      nav.active { right: 0; }
+      nav a {
+        display: block;
+        margin: 1rem 0;
+        font-size: 1.2rem;
+      }
+      .hamburger { display: block; }
+    }
+
+    /* Sections */
+    section { padding: 3rem 1.5rem; max-width: 1100px; margin: auto; }
+
+    /* Fade-in animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .fade-in.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #home {
+      text-align: center;
+      background: #00bcd4;
+      color: #fff;
+      padding: 4rem 2rem;
+    }
+    #home img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      margin-bottom: 1rem;
+    }
+    #about { text-align: center; }
+    #about img {
+      width: 200px;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+
+    /* Skills */
+    .skills .skill { margin-bottom: 1rem; }
+    .skill-bar {
+      background: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .skill-progress {
+      height: 10px;
+      background: #00bcd4;
+      width: 0;
+      transition: width 2s;
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .project-card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+    .project-card:hover { transform: translateY(-5px); }
+    .project-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .project-card .content { padding: 1rem; }
+
+    /* Footer */
+    footer {
+      background: #222;
+      color: #fff;
+      padding: 3rem 1rem 1rem;
+      margin-top: 2rem;
+    }
+    .footer-container {
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+      gap: 2rem;
+    }
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #00bcd4;
+    }
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .social-links a {
+      color: #fff;
+      font-size: 1.2rem;
+      background: rgba(255,255,255,0.1);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+    .social-links a:hover { background: #00bcd4; }
+    .footer-links h3 { color: #fff; margin-bottom: 10px; }
+    .footer-links ul { list-style: none; padding: 0; }
+    .footer-links li { margin-bottom: 8px; }
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .footer-links a:hover { color: #00bcd4; }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 2rem;
+    }
+
+    /* Back to Top button */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+      background-color: #00bcd4;
+      color: #fff;
+      border: none;
+      outline: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 24px;
+      display: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    #backToTop:hover {
+      background-color: #0097a7;
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Eman Farooq</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="hamburger"><i class="fas fa-bars"></i></div>
+  </header>
+
+  <!-- Home -->
+  <section id="home" class="fade-in">
+    <img src="ef.png" alt="Your Photo">
+    <h2>Front-End Web Developer</h2>
+    <p>Passionate about creating responsive, user-friendly, and visually appealing web solutions.</p>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="fade-in">
+    <h2>About Me</h2>
+    <img src="prof.jpeg" alt="Eman Farooq">
+    <p>I am a Computer Science student with skills in front-end, graphic designing, and digital marketing. I enjoy solving problems and building modern, functional websites.</p>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="fade-in">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="skill"><p>HTML</p><div class="skill-bar"><div class="skill-progress" data-width="95%"></div></div></div>
+      <div class="skill"><p>CSS</p><div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div></div>
+      <div class="skill"><p>JavaScript</p><div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div></div>
+      <div class="skill"><p>PHP & MySQL</p><div class="skill-bar"><div class="skill-progress" data-width="50%"></div></div></div>
+      <div class="skill"><p>Graphic Designing</p><div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div></div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="fade-in">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <img src="ef.png" alt="Portfolio Website">
+        <div class="content">
+          <h3>Portfolio Website</h3>
+          <p>A personal portfolio showcasing skills, projects, contact information with a clean and responsive design.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="im.jpeg" alt="SkyWay Travel App">
+        <div class="content">
+          <h3>SkyWay Travel App</h3>
+          <p>A travel booking application with hotel reservations, news, trusted partners, top destinations and management.</p>
+        </div>
+      </div>
+      <div class="project-card">
+        <img src="shop.png" alt="MegaShop">
+        <div class="content">
+          <h3>MegaShop (E-Commerce Website)</h3>
+          <p>A responsive e-commerce platform with product filtering, cart functionality, and checkout process.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="fade-in">
+    <h2>Contact</h2>
+    <p>Email: emanfarooqwork@gmail.com</p>
+    <p>GitHub: <a href="https://github.com/eman848" target="_blank">github.com/eman848</a></p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="fade-in">
+    <div class="footer-container">
+      <div>
+        <div class="footer-logo">Eman Farooq</div>
+        <p>Front-End Developer passionate about building modern, responsive websites.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h3>Services</h3>
+        <ul>
+          <li><a href="#">Web Development</a></li>
+          <li><a href="#">UI/UX Design</a></li>
+          <li><a href="#">Responsive Design</a></li>
+          <li><a href="#">Frontend Consulting</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Eman Farooq. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" title="Go to top">↑</button>
+
+  <script>
+    // Animate skill bars
+    const skillBars = document.querySelectorAll('.skill-progress');
+    function animateSkillBars() {
+      skillBars.forEach(skill => {
+        skill.style.width = skill.getAttribute('data-width');
+      });
+    }
+    window.addEventListener('scroll', () => {
+      const skills = document.querySelector('#skills').getBoundingClientRect();
+      if (skills.top < window.innerHeight - 50) {
+        animateSkillBars();
+      }
+    });
+
+    // Smooth scroll with header offset
+    const hamburger = document.querySelector('.hamburger');
+    const nav = document.querySelector('nav');
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          const headerHeight = document.querySelector('header').offsetHeight;
+          const elementPosition = targetEl.offsetTop - headerHeight;
+          window.scrollTo({
+            top: elementPosition,
+            behavior: 'smooth'
+          });
+          nav.classList.remove('active');
+          hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+      });
+    });
+
+    // Back to Top button
+    const backToTop = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTop.style.display = "block";
+      } else {
+        backToTop.style.display = "none";
+      }
+    });
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Hamburger toggle
+    hamburger.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      hamburger.innerHTML = nav.classList.contains('active')
+        ? '<i class="fas fa-times"></i>'
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    // Fade-in on scroll
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.2, rootMargin: "0px 0px -50px 0px" };
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('show');
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+    faders.forEach(fader => appearOnScroll.observe(fader));
+
+    // Header shrink on scroll
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('shrink');
+      } else {
+        header.classList.remove('shrink');
+      }
+    });
+  </script>
+</body>
+</html>
